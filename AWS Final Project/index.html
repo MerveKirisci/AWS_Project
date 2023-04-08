@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+
+<style>
+    .highcharts-figure,
+.highcharts-data-table table {
+    min-width: 800px;
+    max-width: 1600px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+</style>
+<body>
+
+
+
+
+<figure class="highcharts-figure">
+    <div id="container" style=""></div>
+
+</figure>
+
+</body>
+<script>
+  let cha;
+  const run = function () {
+
+    Highcharts.getJSON('https://6t4illzhjg.execute-api.eu-north-1.amazonaws.com/default/sus_get_data', function (data) {
+      // Create the chart
+      cha =  Highcharts.stockChart('container', {
+        rangeSelector: {
+          selected: 1
+        },
+
+        title: {
+          text: 'River Range in Centimeter'
+        },
+
+        series: [{
+          name: 'range',
+          data: data,
+          tooltip: {
+            valueDecimals: 0
+          }
+        }]
+      });
+    });
+  };
+
+  const update = function () {
+
+    Highcharts.getJSON('https://6t4illzhjg.execute-api.eu-north-1.amazonaws.com/default/sus_get_data', function (data) {
+      // Create the chart
+
+
+      cha.update({
+        series: [{
+          name: 'range',
+          data: data,
+          tooltip: {
+            valueDecimals: 0
+          }
+        }]
+      });
+
+    });
+  };
+
+  run();
+
+  setInterval(update,1000)
+
+
+</script>
+
+
+
+
+</html>
